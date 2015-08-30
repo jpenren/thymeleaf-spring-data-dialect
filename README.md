@@ -19,7 +19,7 @@ you to use in your pages: `pagination`, `pagination-sort`, `pagination-summary`,
 
 Examples
 --------
-
+In your @Controller
 ```java
 @RequestMapping("/users")
 public String list(ModelMap model, @SortDefault("username") Pageable pageable){
@@ -29,6 +29,7 @@ public String list(ModelMap model, @SortDefault("username") Pageable pageable){
 }
 ```
 
+Your html page looks like
 ```html
 <table class="table table-striped table-hover">
 	<thead>
