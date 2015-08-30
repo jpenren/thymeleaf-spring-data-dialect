@@ -21,36 +21,36 @@ Examples
 --------
 ```html
 <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th><a class="sorted" sd:pagination-sort="username" >Username</a></th>
-          <th><a class="sorted" sd:pagination-sort="firstName" >First name</a></th>
-          <th>Last Name</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="row : ${page}">
-          <th scope="row" th:text="${row.username}">Username</th>
-          <td th:text="${row.firstName}">Name</td>
-          <td th:text="${row.lastName}">Last Name</td>
-          <td><a href="#">edit</a></td>
-        </tr>
-      </tbody>
-    </table>
-    
-    <div class="row">
-    	<div class="col-sm-6">
-    		<div sd:pagination-summary="pagination.summary">info</div>
-    	</div>
-    	<div class="col-sm-6">
-    		<nav class="pull-right">
-				<!-- bootstrap pagination created by SpringDataDialect -->
-				<ul class="pagination" sd:pagination="full">
-					<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-				   	<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-				</ul>
-			</nav>
-    	</div>
+	<thead>
+	<tr>
+	  <th><a class="sorted" sd:pagination-sort="username" >Username</a></th>
+	  <th><a class="sorted" sd:pagination-sort="firstName" >First name</a></th>
+	  <th>Last Name</th>
+	  <th></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr th:each="row : ${page}">
+	  <th scope="row" th:text="${row.username}">Username</th>
+	  <td th:text="${row.firstName}">Name</td>
+	  <td th:text="${row.lastName}">Last Name</td>
+	  <td><a href="#">edit</a></td>
+	</tr>
+	</tbody>
+</table>
+
+<div class="row">
+    <div class="col-sm-6">
+    	<div sd:pagination-summary="pagination.summary">info</div>
     </div>
+    <div class="col-sm-6">
+    	<nav class="pull-right">
+			<!-- bootstrap pagination created by SpringDataDialect -->
+			<ul class="pagination" sd:pagination="full">
+				<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+			   	<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+			</ul>
+		</nav>
+    </div>
+</div>
 ```    
