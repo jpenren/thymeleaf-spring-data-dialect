@@ -19,6 +19,16 @@ you to use in your pages: `pagination`, `pagination-sort`, `pagination-summary`,
 
 Examples
 --------
+
+```java
+@RequestMapping("/users")
+public String list(ModelMap model, @SortDefault("username") Pageable pageable){
+	model.addAttribute("page", userService.find(pageable));
+	
+	return "users/list";
+}
+```
+
 ```html
 <table class="table table-striped table-hover">
 	<thead>
