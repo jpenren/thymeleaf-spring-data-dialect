@@ -55,4 +55,4 @@ Examples
 </div>
 ```    
 
-It's all, by default SpringDataDialect search in the request for the attribute "page" or if one attribute of type Page<?> exists.
+It's all, by default SpringDataDialect search in the request for the attribute "page" or if one attribute of type org.springframework.data.domain.Page<?> exists.
