@@ -97,6 +97,17 @@ Aligned links:
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/aligned-links.png "Aligned links")
 
 Multiple tables on the same page:
+
+On @Controller
+```java
+@RequestMapping("/users")
+public String list(ModelMap model, @Qualifier("foo") Pageable first, @Qualifier("bar") Pageable second){
+	model.addAttribute("page", userService.find(first));
+	model.addAttribute("page", userService.find(second));
+	
+	return "users/list";
+}
+```
 ```html
 <div class="row">
 	<div class="col-md-6" sd:page-object="${page}" sd:pagination-qualifier="foo">
