@@ -18,20 +18,20 @@ final class PageObjectAttrProcessor extends AbstractAttributeTagProcessor {
 	protected PageObjectAttrProcessor(final String dialectPrefix) {
 		super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
 	}
-	
+
 	@Override
 	protected void doProcess(ITemplateContext context,
 			IProcessableElementTag tag, AttributeName attributeName,
 			String attributeValue, IElementTagStructureHandler structureHandler) {
 
-		if( context instanceof WebEngineContext ){
+		if (context instanceof WebEngineContext) {
 			Object page = Expressions.evaluate(context, attributeValue);
-			
-			if( !(page instanceof Page<?>) ){
-				throw new InvalidObjectParameterException("Parameter "+attributeValue+" is not an Page<?> instance!");
+
+			if (!(page instanceof Page<?>)) {
+				throw new InvalidObjectParameterException("Parameter " + attributeValue + " is not an Page<?> instance!");
 			}
-			
-			((WebEngineContext)context).setVariable(Keys.PAGE_VARIABLE_KEY, page);
+
+			((WebEngineContext) context).setVariable(Keys.PAGE_VARIABLE_KEY, page);
 		}
 	}
 

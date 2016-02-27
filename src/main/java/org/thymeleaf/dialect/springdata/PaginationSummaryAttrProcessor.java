@@ -39,11 +39,11 @@ final class PaginationSummaryAttrProcessor extends AbstractAttributeTagProcessor
 		int firstItem = PageUtils.getFirstItemInPage(page);
 		int latestItem = PageUtils.getLatestItemInPage(page);
 		int totalElements = (int) page.getTotalElements();
-		boolean isEmpty = page.getTotalElements()==0;
-		
-		String messageKey= isEmpty ? NO_VALUES_MESSAGE_KEY : DEFAULT_MESSAGE_KEY;
+		boolean isEmpty = page.getTotalElements() == 0;
+
+		String messageKey = isEmpty ? NO_VALUES_MESSAGE_KEY : DEFAULT_MESSAGE_KEY;
 		String message = Messages.getMessage(BUNDLE_NAME, messageKey, locale, firstItem, latestItem, totalElements);
-		
+
 		structureHandler.setBody(message, false);
 	}
 	

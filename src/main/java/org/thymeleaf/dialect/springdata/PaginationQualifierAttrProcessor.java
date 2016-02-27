@@ -20,10 +20,10 @@ final class PaginationQualifierAttrProcessor extends AbstractAttributeTagProcess
 	protected void doProcess(ITemplateContext context,
 			IProcessableElementTag tag, AttributeName attributeName,
 			String attributeValue, IElementTagStructureHandler structureHandler) {
-		
-		if( context instanceof WebEngineContext ){
+
+		if (context instanceof WebEngineContext) {
 			String attrValue = String.valueOf(attributeValue).trim();
-			((WebEngineContext)context).setVariable(Keys.PAGINATION_QUALIFIER_PREFIX, attrValue);
+			((WebEngineContext) context).setVariable(Keys.PAGINATION_QUALIFIER_PREFIX, attrValue);
 		}
 	}
 

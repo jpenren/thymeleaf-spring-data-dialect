@@ -25,19 +25,19 @@ final class PaginationSortAttrProcessor extends AbstractAttributeTagProcessor {
 	protected void doProcess(ITemplateContext context,
 			IProcessableElementTag tag, AttributeName attributeName,
 			String attributeValue, IElementTagStructureHandler structureHandler) {
-		
+
 		String attrValue = String.valueOf(attributeValue).trim();
 		Page<?> page = PageUtils.findPage(context);
-        String url = PageUtils.createSortUrl(context, attrValue);
-        
-        //Append class to the element if sorted by this field
-        Sort sort = page.getSort();
-        boolean isSorted = sort!=null && sort.getOrderFor(attributeValue)!=null;
-        String clas = isSorted ? SORTED_PREFIX.concat(sort.getOrderFor(attributeValue).getDirection().toString().toLowerCase()) : EMPTY;
+		String url = PageUtils.createSortUrl(context, attrValue);
 
-        tag.getAttributes().setAttribute(HREF, url);
-        String currentClass= tag.getAttributes().getValue(CLASS);
-        tag.getAttributes().setAttribute(CLASS, Strings.concat(currentClass,BLANK, clas));
+		// Append class to the element if sorted by this field
+		Sort sort = page.getSort();
+		boolean isSorted = sort != null && sort.getOrderFor(attributeValue) != null;
+		String clas = isSorted ? SORTED_PREFIX.concat(sort.getOrderFor(attributeValue).getDirection().toString().toLowerCase()) : EMPTY;
+
+		tag.getAttributes().setAttribute(HREF, url);
+		String currentClass = tag.getAttributes().getValue(CLASS);
+		tag.getAttributes().setAttribute(CLASS, Strings.concat(currentClass, BLANK, clas));
 	}
 
 }

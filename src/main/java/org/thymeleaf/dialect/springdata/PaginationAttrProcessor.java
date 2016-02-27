@@ -22,15 +22,15 @@ final class PaginationAttrProcessor extends AbstractAttributeTagProcessor {
 	protected void doProcess(ITemplateContext context,
 			IProcessableElementTag tag, AttributeName attributeName,
 			String attributeValue, IElementTagStructureHandler structureHandler) {
-		
+
 		String attrValue = String.valueOf(attributeValue).trim();
 		PaginationDecorator decorator = PaginationDecoratorRegistry.getInstance().getDecorator(attrValue);
 		String html = decorator.decorate(tag, context);
-		
+
 		boolean isUlNode = Strings.UL.equalsIgnoreCase(tag.getElementName());
-		if( isUlNode ){
+		if (isUlNode) {
 			structureHandler.replaceWith(html, false);
-		}else{
+		} else {
 			structureHandler.setBody(html, false);
 		}
 	}
