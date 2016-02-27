@@ -67,6 +67,7 @@ Your html page looks like:
     </div>
 </div>
 ```
+
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/simple.png "Simple")
 
 Pagination with pager:
@@ -79,6 +80,7 @@ Pagination with pager:
     </ul>
 </nav>
 ```
+
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/pager.png "Pager")
 
 Aligned links:
@@ -91,6 +93,7 @@ Aligned links:
     </ul>
 </nav>
 ```
+
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/aligned-links.png "Aligned links")
 
 Multiple tables on the same page:
@@ -154,6 +157,7 @@ Multiple tables on the same page:
 	</div>
 </div>
 ```
+
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/multiple-tables.png "Multiple tables")
 
 By default SpringDataDialect search in the request for the attribute "page" or if one attribute of type org.springframework.data.domain.Page<?> exists.
