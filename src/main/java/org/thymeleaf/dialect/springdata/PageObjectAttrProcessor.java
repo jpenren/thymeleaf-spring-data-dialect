@@ -1,48 +1,38 @@
 package org.thymeleaf.dialect.springdata;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.springframework.data.domain.Page;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.Configuration;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.context.WebEngineContext;
 import org.thymeleaf.dialect.springdata.exception.InvalidObjectParameterException;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.ProcessorResult;
-import org.thymeleaf.processor.attr.AbstractAttrProcessor;
-import org.thymeleaf.standard.expression.IStandardExpression;
-import org.thymeleaf.standard.expression.IStandardExpressionParser;
-import org.thymeleaf.standard.expression.StandardExpressions;
+import org.thymeleaf.dialect.springdata.util.Expressions;
+import org.thymeleaf.engine.AttributeName;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
 
-class PageObjectAttrProcessor extends AbstractAttrProcessor {
+final class PageObjectAttrProcessor extends AbstractAttributeTagProcessor {
 	private static final String ATTR_NAME = "page-object";
+	public static final int PRECEDENCE = 900;
 
-	protected PageObjectAttrProcessor() {
-		super(ATTR_NAME);
-	}
-
-	@Override
-	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attrName) {
-		final Configuration configuration = arguments.getConfiguration();
-	    final IStandardExpressionParser parser = StandardExpressions.getExpressionParser(configuration);
-	    final String attributeValue = element.getAttributeValue(attrName);
-	    final IStandardExpression expression = parser.parseExpression(configuration, arguments, attributeValue);
-	    
-	    ProcessorUtils.removeAttribute(element, ATTR_NAME);
-	    
-	    Object page = expression.execute(configuration, arguments);
-	    if( page==null || !(page instanceof Page<?>)){
-	    	throw new InvalidObjectParameterException("No Page object found with page-object parameter value "+attributeValue);
-	    }
-	    
-		Map<String, Object> vars = Collections.<String, Object>singletonMap(Keys.PAGE_VARIABLE_KEY, page);
-		
-		return ProcessorResult.setLocalVariables(vars);
+	protected PageObjectAttrProcessor(final String dialectPrefix) {
+		super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
 	}
 	
 	@Override
-	public int getPrecedence() {
-		return 999;
+	protected void doProcess(ITemplateContext context,
+			IProcessableElementTag tag, AttributeName attributeName,
+			String attributeValue, IElementTagStructureHandler structureHandler) {
+
+		if( context instanceof WebEngineContext ){
+			Object page = Expressions.evaluate(context, attributeValue);
+			
+			if( !(page instanceof Page<?>) ){
+				throw new InvalidObjectParameterException("Parameter "+attributeValue+" is not an Page<?> instance!");
+			}
+			
+			((WebEngineContext)context).setVariable(Keys.PAGE_VARIABLE_KEY, page);
+		}
 	}
 
 }

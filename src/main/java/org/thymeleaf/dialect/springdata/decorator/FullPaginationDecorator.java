@@ -1,104 +1,86 @@
 package org.thymeleaf.dialect.springdata.decorator;
 
-import static org.thymeleaf.dialect.springdata.StringPool.A;
-import static org.thymeleaf.dialect.springdata.StringPool.ACTIVE;
-import static org.thymeleaf.dialect.springdata.StringPool.CLASS;
-import static org.thymeleaf.dialect.springdata.StringPool.DISABLED;
-import static org.thymeleaf.dialect.springdata.StringPool.HREF;
-import static org.thymeleaf.dialect.springdata.StringPool.LI;
-import static org.thymeleaf.dialect.springdata.StringPool.PAGINATION;
-import static org.thymeleaf.dialect.springdata.StringPool.SPAN;
-import static org.thymeleaf.dialect.springdata.StringPool.UL;
+import java.util.Locale;
 
 import org.springframework.data.domain.Page;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dialect.springdata.PageUtils;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.Text;
-import org.unbescape.html.HtmlEscape;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.dialect.springdata.util.Messages;
+import org.thymeleaf.dialect.springdata.util.PageUtils;
+import org.thymeleaf.dialect.springdata.util.Strings;
+import org.thymeleaf.model.IProcessableElementTag;
 
-final class FullPaginationDecorator implements PaginationDecorator{
-	private static final String LAQUO = HtmlEscape.unescapeHtml("&laquo;");
-	private static final String RAQUO = HtmlEscape.unescapeHtml("&raquo;");
-	private Page<?> page;
-	private Arguments arguments;
-	
-	private FullPaginationDecorator(Arguments arguments) {
-		this.arguments = arguments;
-		this.page = PageUtils.findPage(arguments);
+public final class FullPaginationDecorator implements PaginationDecorator{
+	private static final String DEFAULT_CLASS="pagination";
+	private static final String BUNDLE_NAME = FullPaginationDecorator.class.getSimpleName();
+
+	public String getIdentifier() {
+		return "full";
 	}
 	
-	public static FullPaginationDecorator with(Arguments arguments) {
-		return new FullPaginationDecorator(arguments);
-	}
-	
-	public void decorate(Element element){
-		Element ul = element;
-		if( !element.getNormalizedName().equals(UL) ){
-			ul = new Element(UL);
-		    ul.setAttribute(CLASS, PAGINATION);
-	    	element.addChild(ul);
-		}
-    	
-    	//laquo
-	    String firstPage = PageUtils.createPageUrl(arguments, 0);
+	public String decorate(final IProcessableElementTag tag, final ITemplateContext context) {
+		
+		Page<?> page = PageUtils.findPage(context);
+		
+		//laquo
+	    String firstPage = PageUtils.createPageUrl(context, 0);
     	boolean isFirstPage = page.getNumber()==0;
-    	Element laquo = isFirstPage ? createDisabledItem(LAQUO) : createLinkItem(firstPage, LAQUO);
-    	ul.addChild(laquo);
+    	Locale locale = context.getLocale();
+    	String laquo = isFirstPage ? getLaquo(locale) : getLaquo(firstPage, locale);
     	
-    	//Pages
+    	//Links
+    	String pageLinks = createPageLinks(page, context);
+    	
+    	//raquo
+	    boolean isLastPage = page.getTotalPages()==0 || page.getNumber()==(page.getTotalPages()-1);
+	    String lastPage = PageUtils.createPageUrl(context, page.getTotalPages()-1);
+    	String raquo = isLastPage ? getRaquo(locale) : getRaquo(lastPage, locale);
+    	
+    	String content = Strings.concat(laquo, pageLinks, raquo);
+    	String currentClass = tag.getAttributes().getValue(Strings.CLASS);
+    	String clas = Strings.isEmpty(currentClass) ? DEFAULT_CLASS : currentClass;
+    	
+		return Messages.getMessage(BUNDLE_NAME, "pagination", locale, clas, content);
+	}
+	
+	private String createPageLinks(final Page<?> page, final ITemplateContext context){
+		StringBuilder builder = new StringBuilder();
+		//Pages
 		int currentPage = page.getNumber();
 		int totalPages = page.getTotalPages();
 	    for (int i = 0; i < totalPages; i++) {
-	    	String pageNumber = String.valueOf(i+1);
-	    	String link = PageUtils.createPageUrl(arguments, i);
+	    	int pageNumber = i+1;
+	    	String link = PageUtils.createPageUrl(context, i);
 	    	boolean isCurrentPage = i==currentPage;
-	    	Element li = isCurrentPage ? createActiveItem(pageNumber) : createLinkItem(link, pageNumber);
-		    ul.addChild(li);
+	    	Locale locale = context.getLocale();
+	    	String li = isCurrentPage ? getLink(pageNumber, locale) : getLink(pageNumber, link, locale);
+	    	builder.append(li);
 		}
 	    
-	    //raquo
-	    boolean isLastPage = page.getTotalPages()==0 || page.getNumber()==(page.getTotalPages()-1);
-	    String lastPage = PageUtils.createPageUrl(arguments, page.getTotalPages()-1);
-    	Element raquo = isLastPage ? createDisabledItem(RAQUO) : createLinkItem(lastPage, RAQUO);
-    	ul.addChild(raquo);
-	}
-
-	public static Element createLinkItem(String url, String text){
-		Element li = new Element(LI);
-    	Element a = new Element(A);
-    	a.setAttribute(HREF, url);
-    	Element span = new Element(SPAN);
-    	span.addChild(new Text(text));
-    	a.addChild(span);
-    	li.addChild(a);
-    	
-    	return li;
+	    return builder.toString();
 	}
 	
-	private Element createDisabledItem(String text){
-		Element li = createTextItem(text);
-		li.setAttribute(CLASS, DISABLED);
-    	
-    	return li;
+	private String getLaquo(Locale locale){
+		return Messages.getMessage(BUNDLE_NAME, "laquo", locale);
 	}
 	
-	private Element createActiveItem(String text) {
-		Element li = createTextItem(text);
-		li.setAttribute(CLASS, ACTIVE);
-    	
-    	return li;
+	private String getLaquo(String firstPage, Locale locale) {
+		return Messages.getMessage(BUNDLE_NAME, "laquo.link", locale, firstPage);
 	}
 	
-	private Element createTextItem(String text){
-		Element li = new Element(LI);
-    	Element wrapper = new Element(SPAN);
-    	Element span = new Element(SPAN);
-    	span.addChild(new Text(text));
-    	wrapper.addChild(span);
-    	li.addChild(wrapper);
-    	
-    	return li;
+	private String getRaquo(Locale locale){
+		return Messages.getMessage(BUNDLE_NAME, "raquo", locale);
+	}
+	
+	private String getRaquo(String lastPage, Locale locale) {
+		return Messages.getMessage(BUNDLE_NAME, "raquo.link", locale, lastPage);
+	}
+	
+	private String getLink(int pageNumber, Locale locale){
+		return Messages.getMessage(BUNDLE_NAME, "link.active", locale, pageNumber);
+	}
+	
+	private String getLink(int pageNumber, String url, Locale locale){
+		return Messages.getMessage(BUNDLE_NAME, "link", locale, url, pageNumber);
 	}
 	
 }

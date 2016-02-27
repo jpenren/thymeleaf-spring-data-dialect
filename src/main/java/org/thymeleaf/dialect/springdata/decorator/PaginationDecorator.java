@@ -1,9 +1,12 @@
 package org.thymeleaf.dialect.springdata.decorator;
 
-import org.thymeleaf.dom.Element;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.model.IProcessableElementTag;
+
 
 public interface PaginationDecorator {
 	
-	void decorate(Element element);
+	String getIdentifier();
+	String decorate(IProcessableElementTag tag, ITemplateContext context);
 	
 }

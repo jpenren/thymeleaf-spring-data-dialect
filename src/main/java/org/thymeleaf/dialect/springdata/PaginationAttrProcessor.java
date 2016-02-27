@@ -1,33 +1,38 @@
 package org.thymeleaf.dialect.springdata;
 
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dialect.springdata.decorator.PaginationDecoratorFactory;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.ProcessorResult;
-import org.thymeleaf.processor.attr.AbstractAttrProcessor;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.dialect.springdata.decorator.PaginationDecorator;
+import org.thymeleaf.dialect.springdata.decorator.PaginationDecoratorRegistry;
+import org.thymeleaf.dialect.springdata.util.Strings;
+import org.thymeleaf.engine.AttributeName;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
 
-final class PaginationAttrProcessor extends AbstractAttrProcessor {
-	private static final String ATTR_NAME = "pagination";
+final class PaginationAttrProcessor extends AbstractAttributeTagProcessor {
+	private static final String PAGINATION = "pagination";
+	public static final int PRECEDENCE = 1000;
 	
-	protected PaginationAttrProcessor() {
-		super(ATTR_NAME);
-	}
-
-	@Override
-	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attrName) {
-	    final String attributeValue = element.getAttributeValue(attrName);
-	    
-	    ProcessorUtils.removeAttribute(element, ATTR_NAME);
-	    element.clearChildren();
-	    
-	    PaginationDecoratorFactory.getDecorator(attributeValue, arguments).decorate(element);
-	    
-		return ProcessorResult.ok();
+	public PaginationAttrProcessor(final String dialectPrefix) {
+		super(TemplateMode.HTML, dialectPrefix, null, false, PAGINATION, true, PRECEDENCE, true);
 	}
 	
 	@Override
-	public int getPrecedence() {
-		return 1000;
+	protected void doProcess(ITemplateContext context,
+			IProcessableElementTag tag, AttributeName attributeName,
+			String attributeValue, IElementTagStructureHandler structureHandler) {
+		
+		String attrValue = String.valueOf(attributeValue).trim();
+		PaginationDecorator decorator = PaginationDecoratorRegistry.getInstance().getDecorator(attrValue);
+		String html = decorator.decorate(tag, context);
+		
+		boolean isUlNode = Strings.UL.equalsIgnoreCase(tag.getElementName());
+		if( isUlNode ){
+			structureHandler.replaceWith(html, false);
+		}else{
+			structureHandler.setBody(html, false);
+		}
 	}
-
+	
 }

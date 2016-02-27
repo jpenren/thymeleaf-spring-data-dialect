@@ -1,64 +1,43 @@
 package org.thymeleaf.dialect.springdata;
 
-import static org.thymeleaf.dialect.springdata.StringPool.CLASS;
-import static org.thymeleaf.dialect.springdata.StringPool.EMPTY;
-import static org.thymeleaf.dialect.springdata.StringPool.HREF;
-import static org.thymeleaf.dialect.springdata.StringPool.SORTED_PREFIX;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.attr.AbstractAttributeModifierAttrProcessor;
+import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.dialect.springdata.util.PageUtils;
+import org.thymeleaf.dialect.springdata.util.Strings;
+import org.thymeleaf.engine.AttributeName;
+import org.thymeleaf.model.IProcessableElementTag;
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
+import org.thymeleaf.processor.element.IElementTagStructureHandler;
+import org.thymeleaf.templatemode.TemplateMode;
 
-class PaginationSortAttrProcessor extends AbstractAttributeModifierAttrProcessor {
+import static org.thymeleaf.dialect.springdata.util.Strings.*;
+
+final class PaginationSortAttrProcessor extends AbstractAttributeTagProcessor {
 	private static final String ATTR_NAME = "pagination-sort";
-
-	protected PaginationSortAttrProcessor() {
-		super(ATTR_NAME);
+	public static final int PRECEDENCE = 1000;
+	
+	public PaginationSortAttrProcessor(final String dialectPrefix) {
+		super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
 	}
 
 	@Override
-	protected Map<String, String> getModifiedAttributeValues(Arguments arguments, Element element, String attributeName) {
-		final String attributeValue = element.getAttributeValue(attributeName);
-        final Page<?> page = PageUtils.findPage(arguments);
-        final String url = PageUtils.createSortUrl(arguments, attributeValue);
-        
-        ProcessorUtils.removeAttribute(element, ATTR_NAME);
+	protected void doProcess(ITemplateContext context,
+			IProcessableElementTag tag, AttributeName attributeName,
+			String attributeValue, IElementTagStructureHandler structureHandler) {
+		
+		String attrValue = String.valueOf(attributeValue).trim();
+		Page<?> page = PageUtils.findPage(context);
+        String url = PageUtils.createSortUrl(context, attrValue);
         
         //Append class to the element if sorted by this field
         Sort sort = page.getSort();
-        final boolean isSorted = sort!=null && sort.getOrderFor(attributeValue)!=null;
-        final String clas = isSorted ? SORTED_PREFIX.concat(sort.getOrderFor(attributeValue).getDirection().toString().toLowerCase()) : EMPTY;
-        
-        final Map<String, String> modifiedAttributes = new HashMap<String, String>();
-        modifiedAttributes.put(HREF, url);
-        modifiedAttributes.put(CLASS, clas);
-        
-		return modifiedAttributes;
-	}
-	
-	@Override
-	protected ModificationType getModificationType(Arguments arguments, Element element, String attributeName, String newAttributeName) {
-		return CLASS.equals(newAttributeName) ? ModificationType.APPEND_WITH_SPACE : ModificationType.SUBSTITUTION;
-	}
+        boolean isSorted = sort!=null && sort.getOrderFor(attributeValue)!=null;
+        String clas = isSorted ? SORTED_PREFIX.concat(sort.getOrderFor(attributeValue).getDirection().toString().toLowerCase()) : EMPTY;
 
-	@Override
-	protected boolean removeAttributeIfEmpty(Arguments arguments, Element element, String attributeName, String newAttributeName) {
-		return true;
-	}
-
-	@Override
-	protected boolean recomputeProcessorsAfterExecution(Arguments arguments, Element element, String attributeName) {
-		return false;
-	}
-
-	@Override
-	public int getPrecedence() {
-		return 1000;
+        tag.getAttributes().setAttribute(HREF, url);
+        String currentClass= tag.getAttributes().getValue(CLASS);
+        tag.getAttributes().setAttribute(CLASS, Strings.concat(currentClass,BLANK, clas));
 	}
 
 }
