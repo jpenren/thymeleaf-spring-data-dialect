@@ -171,4 +171,4 @@ public String list(ModelMap model, @Qualifier("foo") Pageable first, @Qualifier(
 
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/multiple-tables.png "Multiple tables")
 
-By default SpringDataDialect search in the request for the attribute "page" or if one attribute of type org.springframework.data.domain.Page<?> exists.
+By default SpringDataDialect search in the request for the attribute "page" or if one attribute of type org.springframework.data.domain.Page<?> exists. To use another model attribute, use sd:page-object="${attrName}"
