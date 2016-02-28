@@ -172,3 +172,14 @@ public String list(ModelMap model, @Qualifier("foo") Pageable first, @Qualifier(
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/multiple-tables.png "Multiple tables")
 
 By default SpringDataDialect search in the request for the attribute "page" or if one attribute of type org.springframework.data.domain.Page<?> exists. To use another model attribute, use sd:page-object="${attrName}"
+
+To specify the pagination url use `sd:pagination-url` tag:
+```html
+<nav>
+    <ul class="pagination" sd:pagination="pager" sd:pagination-url="@{/some-url}">
+        <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+        <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+    </ul>
+</nav>
+```
