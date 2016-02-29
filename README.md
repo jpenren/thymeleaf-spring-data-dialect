@@ -98,12 +98,12 @@ Aligned links:
 
 Multiple tables on the same page:
 
-On @Controller
+On your @Controller
 ```java
 @RequestMapping("/users")
 public String list(ModelMap model, @Qualifier("foo") Pageable first, @Qualifier("bar") Pageable second){
 	model.addAttribute("page", userService.find(first));
-	model.addAttribute("page", userService.find(second));
+	model.addAttribute("barPage", userService.find(second));
 	
 	return "users/list";
 }
