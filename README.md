@@ -8,6 +8,15 @@ Thymeleaf 2 version here (https://github.com/jpenren/thymeleaf-spring-data-diale
 Usage
 -----
 
+Maven dependency:
+```xml
+<dependency>
+	<groupId>io.github.jpenren</groupId>
+	<artifactId>thymeleaf-spring-data-dialect</artifactId>
+	<version>1.0.0.BETA02</version>
+</dependency>
+```
+
 Add the Layout dialect to your existing Thymeleaf template engine:
 
 ```java
