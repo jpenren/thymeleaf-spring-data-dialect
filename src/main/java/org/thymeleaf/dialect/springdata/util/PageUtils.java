@@ -1,4 +1,4 @@
-package org.thymeleaf.dialect.springdata;
+package org.thymeleaf.dialect.springdata.util;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,13 +18,15 @@ import org.thymeleaf.Arguments;
 import org.thymeleaf.Configuration;
 import org.thymeleaf.context.IContext;
 import org.thymeleaf.context.IWebContext;
+import org.thymeleaf.dialect.springdata.Keys;
 import org.thymeleaf.dialect.springdata.exception.InvalidObjectParameterException;
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
 
-import static org.thymeleaf.dialect.springdata.StringPool.*;
+import static org.thymeleaf.dialect.springdata.util.Strings.*;
 
+@SuppressWarnings("unchecked")
 public final class PageUtils {
 	
 	private PageUtils() {

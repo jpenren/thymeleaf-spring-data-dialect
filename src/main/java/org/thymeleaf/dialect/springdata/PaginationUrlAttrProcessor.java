@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Configuration;
+import org.thymeleaf.dialect.springdata.util.ProcessorUtils;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
@@ -36,7 +37,7 @@ final class PaginationUrlAttrProcessor extends AbstractAttrProcessor {
 	
 	@Override
 	public int getPrecedence() {
-		return 999;
+		return 900;
 	}
 
 }

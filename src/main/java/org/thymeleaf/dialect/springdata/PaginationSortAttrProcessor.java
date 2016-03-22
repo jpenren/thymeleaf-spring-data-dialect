@@ -1,9 +1,9 @@
 package org.thymeleaf.dialect.springdata;
 
-import static org.thymeleaf.dialect.springdata.StringPool.CLASS;
-import static org.thymeleaf.dialect.springdata.StringPool.EMPTY;
-import static org.thymeleaf.dialect.springdata.StringPool.HREF;
-import static org.thymeleaf.dialect.springdata.StringPool.SORTED_PREFIX;
+import static org.thymeleaf.dialect.springdata.util.Strings.CLASS;
+import static org.thymeleaf.dialect.springdata.util.Strings.EMPTY;
+import static org.thymeleaf.dialect.springdata.util.Strings.HREF;
+import static org.thymeleaf.dialect.springdata.util.Strings.SORTED_PREFIX;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +11,8 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.thymeleaf.Arguments;
+import org.thymeleaf.dialect.springdata.util.PageUtils;
+import org.thymeleaf.dialect.springdata.util.ProcessorUtils;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractAttributeModifierAttrProcessor;
 

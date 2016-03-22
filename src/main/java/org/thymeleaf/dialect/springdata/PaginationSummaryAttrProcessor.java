@@ -1,17 +1,20 @@
 package org.thymeleaf.dialect.springdata;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 import org.springframework.data.domain.Page;
 import org.thymeleaf.Arguments;
+import org.thymeleaf.dialect.springdata.util.Messages;
+import org.thymeleaf.dialect.springdata.util.PageUtils;
+import org.thymeleaf.dialect.springdata.util.ProcessorUtils;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractTextChildModifierAttrProcessor;
-
-class PaginationSummaryAttrProcessor extends AbstractTextChildModifierAttrProcessor {
+	
+final class PaginationSummaryAttrProcessor extends AbstractTextChildModifierAttrProcessor {
 	private static final String DEFAULT_MESSAGE_KEY = "pagination.summary";
 	private static final String NO_VALUES_MESSAGE_KEY = "pagination.summary.empty";
 	private static final String ATTR_NAME = "pagination-summary";
+	private static final String BUNDLE_NAME = "PaginationSummary";
 	
 	protected PaginationSummaryAttrProcessor() {
 		super(ATTR_NAME);
@@ -19,9 +22,6 @@ class PaginationSummaryAttrProcessor extends AbstractTextChildModifierAttrProces
 
 	@Override
 	protected String getText(Arguments arguments, Element element, String attributeName) {
-		final String attributeValue = element.getAttributeValue(attributeName);
-		final String messageKey = attributeValue==null ? DEFAULT_MESSAGE_KEY : attributeValue;
-		
 		ProcessorUtils.removeAttribute(element, ATTR_NAME);
 		
 		//Compose message parameters:
@@ -29,21 +29,19 @@ class PaginationSummaryAttrProcessor extends AbstractTextChildModifierAttrProces
 		// {1} latest page reg. position
 		// {2} total elements in DB
 		Page<?> page = PageUtils.findPage(arguments);
-		if(page.getTotalElements()==0){
-			return getMessage(arguments, NO_VALUES_MESSAGE_KEY, null);
-		}
+		int firstItem = PageUtils.getFirstItemInPage(page);
+		int latestItem = PageUtils.getLatestItemInPage(page);
+		int totalElements = (int) page.getTotalElements();
+		boolean isEmpty = page.getTotalElements() == 0;
+		Locale locale = arguments.getContext().getLocale();
+		String messageKey = isEmpty ? NO_VALUES_MESSAGE_KEY : DEFAULT_MESSAGE_KEY;
 		
-		List<Number> params = new ArrayList<Number>();
-		params.add(PageUtils.getFirstItemInPage(page));
-		params.add(PageUtils.getLatestItemInPage(page));
-		params.add(page.getTotalElements());
-		
-		return getMessage(arguments, messageKey, params.toArray());
+		return Messages.getMessage(BUNDLE_NAME, messageKey, locale, firstItem, latestItem, totalElements);
 	}
 
 	@Override
 	public int getPrecedence() {
-		return 1000;
+		return 900;
 	}
-
+	
 }

@@ -6,7 +6,7 @@ import java.util.Set;
 import org.thymeleaf.dialect.AbstractXHTMLEnabledDialect;
 import org.thymeleaf.processor.IProcessor;
 
-public class SpringDataDialect extends AbstractXHTMLEnabledDialect{
+public final class SpringDataDialect extends AbstractXHTMLEnabledDialect{
 	public static final String PREFIX="sd";
 	
 	public String getPrefix() {
@@ -22,6 +22,7 @@ public class SpringDataDialect extends AbstractXHTMLEnabledDialect{
         attrProcessors.add(new PageObjectAttrProcessor());
         attrProcessors.add(new PaginationUrlAttrProcessor());
         attrProcessors.add(new PaginationQualifierAttrProcessor());
+        attrProcessors.add(new PaginationSplitAttrProcessor());
         
         return attrProcessors;
 	}

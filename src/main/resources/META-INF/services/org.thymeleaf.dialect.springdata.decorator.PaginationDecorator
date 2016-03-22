@@ -1,0 +1,3 @@
+org.thymeleaf.dialect.springdata.decorator.FullPaginationDecorator
+org.thymeleaf.dialect.springdata.decorator.PagerDecorator
+org.thymeleaf.dialect.springdata.decorator.AlignedLinksDecorator

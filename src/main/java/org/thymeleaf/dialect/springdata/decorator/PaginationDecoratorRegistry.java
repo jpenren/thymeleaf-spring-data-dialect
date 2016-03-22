@@ -1,0 +1,46 @@
+package org.thymeleaf.dialect.springdata.decorator;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.ServiceLoader;
+
+import org.thymeleaf.dialect.springdata.exception.PaginationDecoratorNotFoundException;
+
+public final class PaginationDecoratorRegistry {
+    private static PaginationDecoratorRegistry instance;
+    private final Map<String, PaginationDecorator> availableDecorators;
+    
+    private PaginationDecoratorRegistry() {
+    	ServiceLoader<PaginationDecorator> loader = ServiceLoader.load(PaginationDecorator.class);
+        availableDecorators = new HashMap<String, PaginationDecorator>();
+        
+        Iterator<PaginationDecorator> it = loader.iterator();
+        while (it.hasNext()) {
+			PaginationDecorator decorator = (PaginationDecorator) it.next();
+			availableDecorators.put(decorator.getIdentifier(), decorator);
+		}
+    }
+
+    public static PaginationDecoratorRegistry getInstance() {
+        if (instance == null) {
+        	synchronized (PaginationDecoratorRegistry.class) {
+				if( instance==null ){
+					instance = new PaginationDecoratorRegistry();
+				}
+			}
+        }
+        
+        return instance;
+    }
+
+
+    public PaginationDecorator getDecorator(String identifier) throws PaginationDecoratorNotFoundException {
+    	if( !availableDecorators.containsKey(identifier) ){
+    		throw new PaginationDecoratorNotFoundException("Pagination decorator with identifier: "+identifier+" not found!");
+    	}
+    	
+    	return availableDecorators.get(identifier);
+    }
+    
+}

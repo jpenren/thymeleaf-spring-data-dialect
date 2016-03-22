@@ -1,8 +1,9 @@
-package org.thymeleaf.dialect.springdata;
+package org.thymeleaf.dialect.springdata.util;
 
+import org.thymeleaf.dialect.springdata.SpringDataDialect;
 import org.thymeleaf.dom.Element;
 
-final class ProcessorUtils {
+public final class ProcessorUtils {
 	
 	private ProcessorUtils() {
 		
