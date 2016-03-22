@@ -96,10 +96,9 @@ public final class PageUtils {
 	
 	/**
 	 * Creates an url to sort data by fieldName
-	 * @param page
-	 * @param context
-	 * @param fieldName
-	 * @return
+	 * @param arguments execution context
+	 * @param fieldName sort field name
+	 * @return sort url link
 	 */
 	public static String createSortUrl(final Arguments arguments, final String fieldName){
 		//Params can be prefixed to manage multiple pagination on the same page
