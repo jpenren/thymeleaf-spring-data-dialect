@@ -17,7 +17,6 @@ import org.thymeleaf.standard.expression.StandardExpressions;
 
 final class PageObjectAttrProcessor extends AbstractAttrProcessor {
 	private static final String ATTR_NAME = "page-object";
-	public static final int PRECEDENCE = 900;
 	
 	protected PageObjectAttrProcessor() {
 		super(ATTR_NAME);

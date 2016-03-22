@@ -8,6 +8,8 @@ public final class Keys {
 	public static final String PAGE_EXPRESSION = "${page}";
 	public static final String PAGINATION_SPLIT_KEY = "_sd_.pagination.split";
 
-	private Keys() {}
+	private Keys() {
+		
+	}
 	
 }
