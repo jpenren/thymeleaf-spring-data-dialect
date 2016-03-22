@@ -3,8 +3,6 @@ Data pagination made easy with thymeleaf and spring data.
 
 This is a dialect for Thymeleaf that provides some attributes to create pagination and sorting elements, bootstrap style, based on Spring Data.
 
-Thymeleaf 2 version here (https://github.com/jpenren/thymeleaf-spring-data-dialect/tree/thymeleaf-2)
-
 Usage
 -----
 
@@ -13,9 +11,14 @@ Maven dependency:
 <dependency>
 	<groupId>io.github.jpenren</groupId>
 	<artifactId>thymeleaf-spring-data-dialect</artifactId>
-	<version>1.0.0.BETA02</version>
+	<version>(see versions below)</version>
 </dependency>
 ```
+
+Version 2.y.z for Thymeleaf 2
+
+Version 3.y.z for Thymeleaf 3
+
 
 Add the Layout dialect to your existing Thymeleaf template engine:
 
