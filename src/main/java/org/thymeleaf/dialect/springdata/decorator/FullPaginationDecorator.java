@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.springframework.data.domain.Page;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.dialect.springdata.Keys;
 import org.thymeleaf.dialect.springdata.util.Messages;
 import org.thymeleaf.dialect.springdata.util.PageUtils;
 import org.thymeleaf.dialect.springdata.util.Strings;
@@ -12,6 +13,7 @@ import org.thymeleaf.model.IProcessableElementTag;
 public final class FullPaginationDecorator implements PaginationDecorator{
 	private static final String DEFAULT_CLASS="pagination";
 	private static final String BUNDLE_NAME = FullPaginationDecorator.class.getSimpleName();
+	private static final int DEFAULT_PAGE_SPLIT = 7;
 
 	public String getIdentifier() {
 		return "full";
@@ -43,11 +45,34 @@ public final class FullPaginationDecorator implements PaginationDecorator{
 	}
 	
 	private String createPageLinks(final Page<?> page, final ITemplateContext context){
-		StringBuilder builder = new StringBuilder();
-		//Pages
+		int pageSplit = DEFAULT_PAGE_SPLIT;
+		Object paramValue = context.getVariable(Keys.PAGINATION_SPLIT_KEY);
+		if( paramValue!=null ){
+			pageSplit = (Integer) paramValue;
+		}
+		
+		int firstPage=0;
+		int latestPage=page.getTotalPages();
 		int currentPage = page.getNumber();
-		int totalPages = page.getTotalPages();
-	    for (int i = 0; i < totalPages; i++) {
+		if( latestPage>=pageSplit ){
+			//Total pages > than split value, create links to split value
+			int pageDiff = latestPage - currentPage;
+			if(currentPage==0){
+				//From first page to split value
+				latestPage = pageSplit;
+			}else if( pageDiff < pageSplit ){
+				//From split value to latest page
+				firstPage = currentPage - (pageSplit - pageDiff);
+			}else{
+				//From current page -1 to split value
+				firstPage = currentPage - 1;
+				latestPage = currentPage + pageSplit - 1;
+			}
+		}
+		
+		StringBuilder builder = new StringBuilder();
+		//Page links
+	    for (int i = firstPage; i < latestPage; i++) {
 	    	int pageNumber = i+1;
 	    	String link = PageUtils.createPageUrl(context, i);
 	    	boolean isCurrentPage = i==currentPage;
