@@ -15,9 +15,9 @@ Maven dependency:
 </dependency>
 ```
 
-Version 2.y.z for Thymeleaf 2
+Version 2.0.0 for Thymeleaf 2
 
-Version 3.y.z for Thymeleaf 3
+Version 3.y.z will be compatible with Thymeleaf 3
 
 
 Add the Layout dialect to your existing Thymeleaf template engine:
