@@ -66,7 +66,7 @@ Your html page looks like:
 
 <div class="row">
     <div class="col-sm-6">
-    	<div sd:pagination-summary>info</div>
+    	<div sd:pagination-summary="">info</div>
     </div>
     <div class="col-sm-6">
     	<nav class="pull-right">
