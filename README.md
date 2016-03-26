@@ -15,7 +15,7 @@ Maven dependency:
 </dependency>
 ```
 
-Version 2.1.0 for Thymeleaf 2
+Version 2.1.1 for Thymeleaf 2
 
 Version 3.y.z will be compatible with Thymeleaf 3
 
