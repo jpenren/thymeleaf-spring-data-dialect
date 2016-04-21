@@ -34,10 +34,10 @@ final class PaginationSortAttrProcessor extends AbstractAttributeTagProcessor {
 		Sort sort = page.getSort();
 		boolean isSorted = sort != null && sort.getOrderFor(attributeValue) != null;
 		String clas = isSorted ? SORTED_PREFIX.concat(sort.getOrderFor(attributeValue).getDirection().toString().toLowerCase()) : EMPTY;
-
-		tag.getAttributes().setAttribute(HREF, url);
-		String currentClass = tag.getAttributes().getValue(CLASS);
-		tag.getAttributes().setAttribute(CLASS, Strings.concat(currentClass, BLANK, clas));
+		
+		structureHandler.setAttribute(HREF, url);
+		String currentClass = tag.getAttributeValue(CLASS);
+		structureHandler.setAttribute(CLASS, Strings.concat(currentClass, BLANK, clas));
 	}
 
 }

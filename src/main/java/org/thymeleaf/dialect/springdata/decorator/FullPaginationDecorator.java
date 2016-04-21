@@ -43,8 +43,8 @@ public final class FullPaginationDecorator implements PaginationDecorator{
 	    String lastPage = PageUtils.createPageUrl(context, page.getTotalPages()-1);
     	String raquo = isLastPage ? getRaquo(locale) : getRaquo(lastPage, locale);
     	
-    	boolean isUl = Strings.UL.equalsIgnoreCase(tag.getElementName());
-    	String currentClass = tag.getAttributes().getValue(Strings.CLASS);
+    	boolean isUl = Strings.UL.equalsIgnoreCase(tag.getElementCompleteName());
+    	String currentClass = tag.getAttributeValue(Strings.CLASS);
     	String clas = (isUl && !Strings.isEmpty(currentClass)) ? currentClass : DEFAULT_CLASS;
     	
     	return Messages.getMessage(BUNDLE_NAME, "pagination", locale, clas, laquo, previous, pageLinks, next, raquo);

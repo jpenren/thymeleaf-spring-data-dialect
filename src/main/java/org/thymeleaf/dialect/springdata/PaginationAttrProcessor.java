@@ -26,8 +26,8 @@ final class PaginationAttrProcessor extends AbstractAttributeTagProcessor {
 		String attrValue = String.valueOf(attributeValue).trim();
 		PaginationDecorator decorator = PaginationDecoratorRegistry.getInstance().getDecorator(attrValue);
 		String html = decorator.decorate(tag, context);
-
-		boolean isUlNode = Strings.UL.equalsIgnoreCase(tag.getElementName());
+		
+		boolean isUlNode = Strings.UL.equalsIgnoreCase(tag.getElementCompleteName());
 		if (isUlNode) {
 			structureHandler.replaceWith(html, false);
 		} else {
