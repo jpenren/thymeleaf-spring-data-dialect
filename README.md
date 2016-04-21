@@ -20,10 +20,9 @@ Version 2.1.1 for Thymeleaf 2
 Version 3.y.z will be compatible with Thymeleaf 3
 
 
-Add the Layout dialect to your existing Thymeleaf template engine:
+Add the Spring Data dialect to your existing Thymeleaf template engine:
 
 ```java
-
 templateEngine.addDialect(new SpringDataDialect());		// This line adds the dialect to Thymeleaf
 ```
 
