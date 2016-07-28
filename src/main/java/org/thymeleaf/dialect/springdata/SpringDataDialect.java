@@ -32,6 +32,7 @@ public final class SpringDataDialect implements IProcessorDialect {
 		processors.add(new PaginationUrlAttrProcessor(PREFIX));
 		processors.add(new PaginationQualifierAttrProcessor(PREFIX));
 		processors.add(new PaginationSplitAttrProcessor(PREFIX));
+		processors.add(new PageSizeSelectorAttrProcessor(PREFIX));
 
 		return processors;
 	}

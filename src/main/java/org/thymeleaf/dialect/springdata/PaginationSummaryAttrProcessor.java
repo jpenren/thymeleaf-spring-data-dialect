@@ -14,6 +14,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 final class PaginationSummaryAttrProcessor extends AbstractAttributeTagProcessor {
 	private static final String DEFAULT_MESSAGE_KEY = "pagination.summary";
+	private static final String COMPACT_MESSAGE_KEY = "pagination.summary.compact";
 	private static final String NO_VALUES_MESSAGE_KEY = "pagination.summary.empty";
 	private static final String ATTR_NAME = "pagination-summary";
 	public static final int PRECEDENCE = 900;
@@ -41,7 +42,9 @@ final class PaginationSummaryAttrProcessor extends AbstractAttributeTagProcessor
 		int totalElements = (int) page.getTotalElements();
 		boolean isEmpty = page.getTotalElements() == 0;
 
-		String messageKey = isEmpty ? NO_VALUES_MESSAGE_KEY : DEFAULT_MESSAGE_KEY;
+		String attrValue = String.valueOf(attributeValue).trim();
+		String messageTemplate = "compact".equals(attrValue) ? COMPACT_MESSAGE_KEY : DEFAULT_MESSAGE_KEY;
+		String messageKey = isEmpty ? NO_VALUES_MESSAGE_KEY : messageTemplate;
 		String message = Messages.getMessage(BUNDLE_NAME, messageKey, locale, firstItem, latestItem, totalElements);
 
 		structureHandler.setBody(message, false);
