@@ -14,7 +14,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor {
 	private static final String MESSAGE_PREFIX = "page.size.selector.";
-	private static final String DEFAULT_MESSAGE_KEY = MESSAGE_PREFIX + "default";
+	private static final String DEFAULT_STYLE = MESSAGE_PREFIX + "default";
 	private static final String ATTR_NAME = "page-size-selector";
 	public static final int PRECEDENCE = 900;
 	private static final String BUNDLE_NAME = "PageSizeSelector";
@@ -30,33 +30,35 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
 			String attributeValue, IElementTagStructureHandler structureHandler) {
 		
 		Locale locale = context.getLocale();
-		Page<?> page = PageUtils.findPage(context);
-		int currentPageSize = page.getSize();
 		String selectorStyle = String.valueOf(attributeValue).trim();
 		String messageKey = getMessageKey(selectorStyle);
-		String options = composeSelectorOptions(selectorStyle, context, currentPageSize);
+		String options = composeSelectorOptions(selectorStyle, context);
 		String message = Messages.getMessage(BUNDLE_NAME, messageKey, locale, options);
 
 		structureHandler.setBody(message, false);
 	}
 	
 	private String getMessageKey(String selectorStyle){
-		return ("".equals(selectorStyle)||"default".equals(selectorStyle))?DEFAULT_MESSAGE_KEY:(MESSAGE_PREFIX+selectorStyle);
+		return "".equals(selectorStyle) ? DEFAULT_STYLE: MESSAGE_PREFIX.concat(selectorStyle);
 	}
 	
 	/**
 	 * Create select html content, list of options
+	 * @param selectorStyle html selector style
 	 * @param context execution context
 	 * @param selectedValue current selected value
 	 * @return available page size options as html
 	 */
-	private String composeSelectorOptions(String selectorStyle, ITemplateContext context, int selectedValue){
+	private String composeSelectorOptions(String selectorStyle, ITemplateContext context){
+		Page<?> page = PageUtils.findPage(context);
+		int currentPageSize = page.getSize();
 		Locale locale = context.getLocale();
 		StringBuilder sb = new StringBuilder();
 		for (int value : selectorValues) {
-			boolean isSelectedValue = value==selectedValue;
 			String url = PageUtils.createPageSizeUrl(context, value);
-			String option = Messages.getMessage(BUNDLE_NAME, getMessageKey(selectorStyle)+".option" , locale, value, url);
+			boolean isSelectedValue = value==currentPageSize;
+			String messageKey = getMessageKey(selectorStyle).concat(isSelectedValue ? ".option.selected" : ".option");
+			String option = Messages.getMessage(BUNDLE_NAME, messageKey , locale, value, url);
 			sb.append( option );
 		}
 		
