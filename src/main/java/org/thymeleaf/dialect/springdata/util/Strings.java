@@ -13,6 +13,7 @@ public final class Strings {
 	public static final String Q_MARK="?";
 	public static final String EQ="=";
 	public static final String PAGE="page";
+	public static final String SIZE="size";
 	public static final String SORTED_PREFIX="sorted-";
 	public static final String SORT="sort";
 	

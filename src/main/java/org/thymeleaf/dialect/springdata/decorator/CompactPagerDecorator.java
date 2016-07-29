@@ -1,10 +1,10 @@
 package org.thymeleaf.dialect.springdata.decorator;
 
-public class CompactDecorator extends AbstractPagerDecorator {
+public class CompactPagerDecorator extends AbstractPagerDecorator {
 
 	@Override
 	public String getIdentifier() {
-		return "compact";
+		return "compact-pager";
 	}
 
 }

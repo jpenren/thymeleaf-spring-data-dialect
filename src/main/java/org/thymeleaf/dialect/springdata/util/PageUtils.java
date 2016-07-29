@@ -7,6 +7,7 @@ import static org.thymeleaf.dialect.springdata.util.Strings.EQ;
 import static org.thymeleaf.dialect.springdata.util.Strings.PAGE;
 import static org.thymeleaf.dialect.springdata.util.Strings.Q_MARK;
 import static org.thymeleaf.dialect.springdata.util.Strings.SORT;
+import static org.thymeleaf.dialect.springdata.util.Strings.SIZE;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -114,6 +115,15 @@ public final class PageUtils {
 		}
 		
 		return buildUrl(baseUrl, context).append(SORT).append(EQ).append(sortParam).toString();
+	}
+	
+	public static String createPageSizeUrl(final ITemplateContext context, int pageSize){
+		final String prefix = getParamPrefix(context);
+		//Reset page number to avoid empty lists
+		final Collection<String> excludedParams = Arrays.asList(new String[]{prefix.concat(SIZE), prefix.concat(PAGE)});
+		final String baseUrl = buildBaseUrl(context, excludedParams);
+		
+		return buildUrl(baseUrl, context).append(SIZE).append(EQ).append(pageSize).toString();
 	}
 	
 	public static int getFirstItemInPage(final Page<?> page){
