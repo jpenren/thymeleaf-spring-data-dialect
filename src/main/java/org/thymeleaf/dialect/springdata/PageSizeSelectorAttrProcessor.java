@@ -16,8 +16,6 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
 	private static final String MESSAGE_PREFIX = "page.size.selector.";
 	private static final String DEFAULT_MESSAGE_KEY = MESSAGE_PREFIX + "default";
 	private static final String ATTR_NAME = "page-size-selector";
-	private static final String OPTION_TEMPLATE ="<option value=\"@value\" data-page-size-url=\"@url\">@value</option>";
-	private static final String SELECTED_OPTION_TEMPLATE ="<option class=\"selected\" value=\"@value\" selected=\"selected\">@value</option>";
 	public static final int PRECEDENCE = 900;
 	private static final String BUNDLE_NAME = "PageSizeSelector";
 	private int[] selectorValues = new int[]{10, 20, 50, 100};
@@ -34,16 +32,16 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
 		Locale locale = context.getLocale();
 		Page<?> page = PageUtils.findPage(context);
 		int currentPageSize = page.getSize();
-		String attrValue = String.valueOf(attributeValue).trim();
-		String messageKey = getMessageKey(attrValue);
-		String options = composeSelectorOptions(context, currentPageSize);
+		String selectorStyle = String.valueOf(attributeValue).trim();
+		String messageKey = getMessageKey(selectorStyle);
+		String options = composeSelectorOptions(selectorStyle, context, currentPageSize);
 		String message = Messages.getMessage(BUNDLE_NAME, messageKey, locale, options);
 
 		structureHandler.setBody(message, false);
 	}
 	
-	private String getMessageKey(String attrValue){
-		return ("".equals(attrValue)||"default".equals(attrValue))?DEFAULT_MESSAGE_KEY:(MESSAGE_PREFIX+attrValue);
+	private String getMessageKey(String selectorStyle){
+		return ("".equals(selectorStyle)||"default".equals(selectorStyle))?DEFAULT_MESSAGE_KEY:(MESSAGE_PREFIX+selectorStyle);
 	}
 	
 	/**
@@ -52,13 +50,14 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
 	 * @param selectedValue current selected value
 	 * @return available page size options as html
 	 */
-	private String composeSelectorOptions(ITemplateContext context, int selectedValue){
+	private String composeSelectorOptions(String selectorStyle, ITemplateContext context, int selectedValue){
+		Locale locale = context.getLocale();
 		StringBuilder sb = new StringBuilder();
 		for (int value : selectorValues) {
 			boolean isSelectedValue = value==selectedValue;
-			String option = isSelectedValue ? SELECTED_OPTION_TEMPLATE : OPTION_TEMPLATE;
 			String url = PageUtils.createPageSizeUrl(context, value);
-			sb.append( option.replace("@value", String.valueOf(value)).replace("@url", url) );
+			String option = Messages.getMessage(BUNDLE_NAME, getMessageKey(selectorStyle)+".option" , locale, value, url);
+			sb.append( option );
 		}
 		
 		return sb.toString();
