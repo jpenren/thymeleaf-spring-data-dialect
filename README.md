@@ -17,7 +17,7 @@ Maven dependency:
 
 Version 2.1.1 for Thymeleaf 2
 
-Version 3.0.0 compatible with Thymeleaf 3
+Version 3.1.0 compatible with Thymeleaf 3
 
 
 Add the Spring Data dialect to your existing Thymeleaf template engine:
@@ -28,7 +28,7 @@ templateEngine.addDialect(new SpringDataDialect());		// This line adds the diale
 
 This will introduce the `sd` namespace, and the new attribute processors that
 you to use in your pages: `pagination`, `pagination-sort`, `pagination-summary`,
-`pagination-url`, `page-object`, and `pagination-qualifier`.
+`pagination-url`, `page-object`, `pagination-qualifier` and `page-size-selector`.
 
 Examples
 --------
@@ -106,6 +106,37 @@ Aligned links:
 ```
 
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/aligned-links.png "Aligned links")
+
+Compact pager:
+```html
+<div>
+    <span sd:pagination-summary="compact">info</span>
+    <div class="btn-group pager-compact" sd:pagination="compact-pager">
+        <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+        <a href="#" class="btn btn-default disabled"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a href="#" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+</div>
+```
+![alt text] (https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/compact.png "Compact pager")
+
+Page size selector (default requires your own javascript code, no action associated):
+```html
+Show <span sd:page-size-selector="default"></span> entries
+```
+![alt text] (https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-select.png "Page size selector")
+
+Page size selector (with javascript code implemented):
+```html
+Show <span sd:page-size-selector="javascript"></span> entries
+```
+![alt text] (https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-select.png "Page size selector")
+
+Page size selector (dropdown):
+```html
+<div class="btn-group dropup" sd:page-size-selector="dropdown"></div>
+```
+![alt text] (https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-dropdown.png "Page size selector")
 
 Multiple tables on the same page:
 
