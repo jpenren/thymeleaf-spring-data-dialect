@@ -6,8 +6,8 @@ import static org.thymeleaf.dialect.springdata.util.Strings.EMPTY;
 import static org.thymeleaf.dialect.springdata.util.Strings.EQ;
 import static org.thymeleaf.dialect.springdata.util.Strings.PAGE;
 import static org.thymeleaf.dialect.springdata.util.Strings.Q_MARK;
-import static org.thymeleaf.dialect.springdata.util.Strings.SORT;
 import static org.thymeleaf.dialect.springdata.util.Strings.SIZE;
+import static org.thymeleaf.dialect.springdata.util.Strings.SORT;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,6 +31,7 @@ import org.thymeleaf.dialect.springdata.exception.InvalidObjectParameterExceptio
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
+import org.unbescape.html.HtmlEscape;
 
 @SuppressWarnings("unchecked")
 public final class PageUtils {
@@ -166,7 +167,7 @@ public final class PageUtils {
 	        		Collection<String> paramValues = Arrays.asList(values);
 	        		Iterator<String> it = paramValues.iterator();
 	        		while ( it.hasNext() ) {
-						String value = it.next();
+	        			String value = it.next();
 						builder.append(name).append(EQ).append(value);
 						if( it.hasNext() ){
 							builder.append(AND);
@@ -174,8 +175,9 @@ public final class PageUtils {
 					}
 	        	}
 			}
-
-	        return builder.toString();
+	        
+	        //Escape to HTML content
+	        return HtmlEscape.escapeHtml4Xml( builder.toString() );
 		}
 		
 		return url==null ? EMPTY : url;
