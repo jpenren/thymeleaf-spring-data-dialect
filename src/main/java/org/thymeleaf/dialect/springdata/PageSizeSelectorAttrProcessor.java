@@ -1,11 +1,16 @@
 package org.thymeleaf.dialect.springdata;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import org.springframework.data.domain.Page;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.springdata.util.Messages;
 import org.thymeleaf.dialect.springdata.util.PageUtils;
+import org.thymeleaf.dialect.springdata.util.PropertiesLoader;
+import org.thymeleaf.dialect.springdata.util.Strings;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor;
@@ -13,15 +18,32 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
 final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor {
+	private static final String CONFIG_FILE="/thymeleaf-spring-data-dialect/PageSizeSelector.properties";
 	private static final String MESSAGE_PREFIX = "page.size.selector.";
 	private static final String DEFAULT_STYLE = MESSAGE_PREFIX + "default";
 	private static final String ATTR_NAME = "page-size-selector";
 	public static final int PRECEDENCE = 900;
 	private static final String BUNDLE_NAME = "PageSizeSelector";
-	private int[] selectorValues = new int[]{10, 20, 50, 100};
+	private static final String SELECTOR_VALUES = "page.size.selector.values";
+	private final List<Integer> selectorValues = new ArrayList<Integer>();
 	
 	protected PageSizeSelectorAttrProcessor(final String dialectPrefix) {
 		super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+		loadSelectorValues();
+	}
+
+	private void loadSelectorValues() {
+		try {
+			//Load selector values from properties file
+			Properties config = PropertiesLoader.loadProperties(CONFIG_FILE);
+			String property = config.getProperty(SELECTOR_VALUES);
+			String[] values = property.split(Strings.COMMA);
+			for (String value : values) {
+				selectorValues.add( Integer.parseInt(value.trim()) );
+			}
+		} catch (Exception e) {
+			throw new IllegalStateException("Configuration parameter not valid: "+SELECTOR_VALUES, e);
+		}
 	}
 
 	@Override
