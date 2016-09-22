@@ -3,13 +3,13 @@ package org.thymeleaf.dialect.springdata;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.springdata.util.Messages;
 import org.thymeleaf.dialect.springdata.util.PageUtils;
-import org.thymeleaf.dialect.springdata.util.PropertiesLoader;
 import org.thymeleaf.dialect.springdata.util.Strings;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.model.IProcessableElementTag;
@@ -18,7 +18,7 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
 final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor {
-	private static final String CONFIG_FILE="/thymeleaf-spring-data-dialect/PageSizeSelector.properties";
+	private static final Logger LOGGER = LoggerFactory.getLogger(PageSizeSelectorAttrProcessor.class);
 	private static final String MESSAGE_PREFIX = "page.size.selector.";
 	private static final String DEFAULT_STYLE = MESSAGE_PREFIX + "default";
 	private static final String ATTR_NAME = "page-size-selector";
@@ -29,21 +29,6 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
 	
 	protected PageSizeSelectorAttrProcessor(final String dialectPrefix) {
 		super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
-		loadSelectorValues();
-	}
-
-	private void loadSelectorValues() {
-		try {
-			//Load selector values from properties file
-			Properties config = PropertiesLoader.loadProperties(CONFIG_FILE);
-			String property = config.getProperty(SELECTOR_VALUES);
-			String[] values = property.split(Strings.COMMA);
-			for (String value : values) {
-				selectorValues.add( Integer.parseInt(value.trim()) );
-			}
-		} catch (Exception e) {
-			throw new IllegalStateException("Configuration parameter not valid: "+SELECTOR_VALUES, e);
-		}
 	}
 
 	@Override
@@ -52,12 +37,27 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
 			String attributeValue, IElementTagStructureHandler structureHandler) {
 		
 		Locale locale = context.getLocale();
+		loadSelectorValues(locale);
 		String selectorStyle = String.valueOf(attributeValue).trim();
 		String messageKey = getMessageKey(selectorStyle);
 		String options = composeSelectorOptions(selectorStyle, context);
 		String message = Messages.getMessage(BUNDLE_NAME, messageKey, locale, options);
-
+		
 		structureHandler.setBody(message, false);
+	}
+	
+	private void loadSelectorValues(Locale locale) {
+		if( selectorValues.isEmpty() ){
+			String property = Messages.getMessage(BUNDLE_NAME,SELECTOR_VALUES, locale);
+			String[] values = property.split(Strings.COMMA);
+			for (String value : values) {
+				try {
+					selectorValues.add( Integer.parseInt(value.trim()) );
+				} catch (Exception e) {
+					LOGGER.error("Invalid page size value: {}", value, e);
+				}
+			}
+		}
 	}
 	
 	private String getMessageKey(String selectorStyle){
