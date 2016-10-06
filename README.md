@@ -17,7 +17,7 @@ Maven dependency:
 
 Version 2.1.1 for Thymeleaf 2
 
-Version 3.1.0 compatible with Thymeleaf 3
+Version 3.2.0 compatible with Thymeleaf 3
 
 
 Add the Spring Data dialect to your existing Thymeleaf template engine:
