@@ -26,6 +26,14 @@ Add the Spring Data dialect to your existing Thymeleaf template engine:
 templateEngine.addDialect(new SpringDataDialect());		// This line adds the dialect to Thymeleaf
 ```
 
+If using Spring Boot you can add the following line and the ThymeleafAutoConfiguration class will add the dialect to the template engine.
+```java
+    @Bean
+    public SpringDataDialect springDataDialect() {
+        return new SpringDataDialect();
+    }
+```
+
 This will introduce the `sd` namespace, and the new attribute processors that
 you to use in your pages: `pagination`, `pagination-sort`, `pagination-summary`,
 `pagination-url`, `page-object`, `pagination-qualifier` and `page-size-selector`.
