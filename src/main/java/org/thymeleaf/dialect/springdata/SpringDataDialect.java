@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
+import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor;
+import org.thymeleaf.templatemode.TemplateMode;
 
 public final class SpringDataDialect implements IProcessorDialect {
 	public static final String PREFIX = "sd";
@@ -25,6 +27,7 @@ public final class SpringDataDialect implements IProcessorDialect {
 
 	public Set<IProcessor> getProcessors(final String dialectPrefix) {
 		final Set<IProcessor> processors = new HashSet<IProcessor>();
+		processors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, PREFIX));
 		processors.add(new PaginationAttrProcessor(PREFIX));
 		processors.add(new PaginationSortAttrProcessor(PREFIX));
 		processors.add(new PaginationSummaryAttrProcessor(PREFIX));
