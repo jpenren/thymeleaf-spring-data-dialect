@@ -234,3 +234,38 @@ To specify the pagination url use `sd:pagination-url` tag:
 </nav>
 ```
 
+Sort Icons
+----------
+The generated HTML has the CSS classes `sorted`, `sorted-asc` and `sorted-desc`. This allows you to quite easily add some custom CSS to have sort icons in the table headers.
+
+Example with FontAwesome:
+```
+table.table thead .sorted:after{
+	display: inline-block;
+	font-family: 'FontAwesome';
+	opacity: 0.8;
+	margin-left: 1em;
+}
+table.table thead .sorted.sorted-desc:after{
+	content: "\f15e";
+}
+table.table thead .sorted.sorted-asc:after{
+	content: "\f15d";
+}
+```
+
+Example with Unicode characters:
+
+```
+.sorted-desc::after, .sorted-asc::after {
+    float: right;
+}
+
+.sorted-desc::after{
+    content:"\25BC";
+}
+
+.sorted-asc::after{
+    content: "\25B2";
+}
+```
