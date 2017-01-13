@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.jpenren</groupId>
 	<artifactId>thymeleaf-spring-data-dialect</artifactId>
-	<version>3.2.1</version>
+	<version>3.2.2</version>
 	
 	<name>Thymeleaf Spring Data Dialect</name>
 	<description>Data pagination made easy with Thymeleaf and Spring Data</description>

@@ -12,27 +12,27 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
 final class PageObjectAttrProcessor extends AbstractAttributeTagProcessor {
-	private static final String ATTR_NAME = "page-object";
-	public static final int PRECEDENCE = 900;
+    private static final String ATTR_NAME = "page-object";
+    public static final int PRECEDENCE = 900;
 
-	protected PageObjectAttrProcessor(final String dialectPrefix) {
-		super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
-	}
+    protected PageObjectAttrProcessor(final String dialectPrefix) {
+        super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+    }
 
-	@Override
-	protected void doProcess(ITemplateContext context,
-			IProcessableElementTag tag, AttributeName attributeName,
-			String attributeValue, IElementTagStructureHandler structureHandler) {
+    @Override
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
+            String attributeValue, IElementTagStructureHandler structureHandler) {
 
-		if (context instanceof WebEngineContext) {
-			Object page = Expressions.evaluate(context, attributeValue);
+        if (context instanceof WebEngineContext) {
+            Object page = Expressions.evaluate(context, attributeValue);
 
-			if (!(page instanceof Page<?>)) {
-				throw new InvalidObjectParameterException("Parameter " + attributeValue + " is not an Page<?> instance!");
-			}
+            if (!(page instanceof Page<?>)) {
+                throw new InvalidObjectParameterException(
+                        "Parameter " + attributeValue + " is not an Page<?> instance!");
+            }
 
-			((WebEngineContext) context).setVariable(Keys.PAGE_VARIABLE_KEY, page);
-		}
-	}
+            ((WebEngineContext) context).setVariable(Keys.PAGE_VARIABLE_KEY, page);
+        }
+    }
 
 }

@@ -14,30 +14,31 @@ import org.thymeleaf.templatemode.TemplateMode;
 import static org.thymeleaf.dialect.springdata.util.Strings.*;
 
 final class PaginationSortAttrProcessor extends AbstractAttributeTagProcessor {
-	private static final String ATTR_NAME = "pagination-sort";
-	public static final int PRECEDENCE = 1000;
-	
-	public PaginationSortAttrProcessor(final String dialectPrefix) {
-		super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
-	}
+    private static final String ATTR_NAME = "pagination-sort";
+    public static final int PRECEDENCE = 1000;
 
-	@Override
-	protected void doProcess(ITemplateContext context,
-			IProcessableElementTag tag, AttributeName attributeName,
-			String attributeValue, IElementTagStructureHandler structureHandler) {
+    public PaginationSortAttrProcessor(final String dialectPrefix) {
+        super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+    }
 
-		String attrValue = String.valueOf(attributeValue).trim();
-		Page<?> page = PageUtils.findPage(context);
-		String url = PageUtils.createSortUrl(context, attrValue);
+    @Override
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
+            String attributeValue, IElementTagStructureHandler structureHandler) {
 
-		// Append class to the element if sorted by this field
-		Sort sort = page.getSort();
-		boolean isSorted = sort != null && sort.getOrderFor(attributeValue) != null;
-		String clas = isSorted ? SORTED_PREFIX.concat(sort.getOrderFor(attributeValue).getDirection().toString().toLowerCase()) : EMPTY;
-		
-		structureHandler.setAttribute(HREF, url);
-		String currentClass = tag.getAttributeValue(CLASS);
-		structureHandler.setAttribute(CLASS, Strings.concat(currentClass, BLANK, clas));
-	}
+        String attrValue = String.valueOf(attributeValue).trim();
+        Page<?> page = PageUtils.findPage(context);
+        String url = PageUtils.createSortUrl(context, attrValue);
+
+        // Append class to the element if sorted by this field
+        Sort sort = page.getSort();
+        boolean isSorted = sort != null && sort.getOrderFor(attributeValue) != null;
+        String clas = isSorted
+                ? SORTED_PREFIX.concat(sort.getOrderFor(attributeValue).getDirection().toString().toLowerCase())
+                : EMPTY;
+
+        structureHandler.setAttribute(HREF, url);
+        String currentClass = tag.getAttributeValue(CLASS);
+        structureHandler.setAttribute(CLASS, Strings.concat(currentClass, BLANK, clas));
+    }
 
 }

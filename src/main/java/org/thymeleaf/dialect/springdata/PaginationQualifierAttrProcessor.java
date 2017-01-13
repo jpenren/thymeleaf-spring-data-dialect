@@ -9,22 +9,21 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
 final class PaginationQualifierAttrProcessor extends AbstractAttributeTagProcessor {
-	private static final String ATTR_NAME = "pagination-qualifier";
-	public static final int PRECEDENCE = 900;
+    private static final String ATTR_NAME = "pagination-qualifier";
+    public static final int PRECEDENCE = 900;
 
-	protected PaginationQualifierAttrProcessor(final String dialectPrefix) {
-		super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
-	}
+    protected PaginationQualifierAttrProcessor(final String dialectPrefix) {
+        super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
+    }
 
-	@Override
-	protected void doProcess(ITemplateContext context,
-			IProcessableElementTag tag, AttributeName attributeName,
-			String attributeValue, IElementTagStructureHandler structureHandler) {
+    @Override
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
+            String attributeValue, IElementTagStructureHandler structureHandler) {
 
-		if (context instanceof WebEngineContext) {
-			String attrValue = String.valueOf(attributeValue).trim();
-			((WebEngineContext) context).setVariable(Keys.PAGINATION_QUALIFIER_PREFIX, attrValue);
-		}
-	}
+        if (context instanceof WebEngineContext) {
+            String attrValue = String.valueOf(attributeValue).trim();
+            ((WebEngineContext) context).setVariable(Keys.PAGINATION_QUALIFIER_PREFIX, attrValue);
+        }
+    }
 
 }

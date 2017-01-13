@@ -11,28 +11,27 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler;
 import org.thymeleaf.templatemode.TemplateMode;
 
 final class PaginationAttrProcessor extends AbstractAttributeTagProcessor {
-	private static final String PAGINATION = "pagination";
-	public static final int PRECEDENCE = 1000;
-	
-	public PaginationAttrProcessor(final String dialectPrefix) {
-		super(TemplateMode.HTML, dialectPrefix, null, false, PAGINATION, true, PRECEDENCE, true);
-	}
-	
-	@Override
-	protected void doProcess(ITemplateContext context,
-			IProcessableElementTag tag, AttributeName attributeName,
-			String attributeValue, IElementTagStructureHandler structureHandler) {
+    private static final String PAGINATION = "pagination";
+    public static final int PRECEDENCE = 1000;
 
-		String attrValue = String.valueOf(attributeValue).trim();
-		PaginationDecorator decorator = PaginationDecoratorRegistry.getInstance().getDecorator(attrValue);
-		String html = decorator.decorate(tag, context);
-		
-		boolean isUlNode = Strings.UL.equalsIgnoreCase(tag.getElementCompleteName());
-		if (isUlNode) {
-			structureHandler.replaceWith(html, false);
-		} else {
-			structureHandler.setBody(html, false);
-		}
-	}
-	
+    public PaginationAttrProcessor(final String dialectPrefix) {
+        super(TemplateMode.HTML, dialectPrefix, null, false, PAGINATION, true, PRECEDENCE, true);
+    }
+
+    @Override
+    protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
+            String attributeValue, IElementTagStructureHandler structureHandler) {
+
+        String attrValue = String.valueOf(attributeValue).trim();
+        PaginationDecorator decorator = PaginationDecoratorRegistry.getInstance().getDecorator(attrValue);
+        String html = decorator.decorate(tag, context);
+
+        boolean isUlNode = Strings.UL.equalsIgnoreCase(tag.getElementCompleteName());
+        if (isUlNode) {
+            structureHandler.replaceWith(html, false);
+        } else {
+            structureHandler.setBody(html, false);
+        }
+    }
+
 }
