@@ -94,9 +94,9 @@ public final class PageUtils {
     /**
      * Creates an url to sort data by fieldName
      * 
-     * @param context
-     * @param fieldName
-     * @return
+     * @param context execution context
+     * @param fieldName field name to sort
+     * @return sort URL
      */
     public static String createSortUrl(final ITemplateContext context, final String fieldName) {
         // Params can be prefixed to manage multiple pagination on the same page
