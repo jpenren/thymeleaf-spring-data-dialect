@@ -51,6 +51,10 @@ public final class FullPaginationDecorator implements PaginationDecorator {
     }
 
     private String createPageLinks(final Page<?> page, final ITemplateContext context) {
+        if( page.getTotalElements()==0 ){
+            return Strings.EMPTY;
+        }
+        
         int pageSplit = DEFAULT_PAGE_SPLIT;
         Object paramValue = context.getVariable(Keys.PAGINATION_SPLIT_KEY);
         if (paramValue != null) {
