@@ -3,6 +3,7 @@ package org.thymeleaf.dialect.springdata;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.thymeleaf.context.ITemplateContext;
+import org.thymeleaf.dialect.springdata.util.Expressions;
 import org.thymeleaf.dialect.springdata.util.PageUtils;
 import org.thymeleaf.dialect.springdata.util.Strings;
 import org.thymeleaf.engine.AttributeName;
@@ -25,7 +26,7 @@ final class PaginationSortAttrProcessor extends AbstractAttributeTagProcessor {
     protected void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
             String attributeValue, IElementTagStructureHandler structureHandler) {
 
-        String attrValue = String.valueOf(attributeValue).trim();
+        String attrValue = String.valueOf(Expressions.evaluate(context, attributeValue)).trim();
         Page<?> page = PageUtils.findPage(context);
         String url = PageUtils.createSortUrl(context, attrValue);
 
