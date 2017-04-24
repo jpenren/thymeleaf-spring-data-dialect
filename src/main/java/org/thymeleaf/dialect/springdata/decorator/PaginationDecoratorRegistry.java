@@ -9,21 +9,19 @@ import org.thymeleaf.dialect.springdata.exception.PaginationDecoratorNotFoundExc
 
 public final class PaginationDecoratorRegistry {
     private static final PaginationDecoratorRegistry INSTANCE = new PaginationDecoratorRegistry();
-    private final ServiceLoader<PaginationDecorator> loader;
     private final Map<String, PaginationDecorator> availableDecorators;
 
     private PaginationDecoratorRegistry() {
-        loader = ServiceLoader.load(PaginationDecorator.class);
+
+        final ServiceLoader<PaginationDecorator> loader = ServiceLoader.load(PaginationDecorator.class);
         availableDecorators = new HashMap<String, PaginationDecorator>();
 
-        Iterator<PaginationDecorator> it = loader.iterator();
-        while (it.hasNext()) {
-            PaginationDecorator decorator = (PaginationDecorator) it.next();
+        for (PaginationDecorator decorator : loader) {
             availableDecorators.put(decorator.getIdentifier(), decorator);
         }
     }
 
-    public static synchronized PaginationDecoratorRegistry getInstance() {
+    public static PaginationDecoratorRegistry getInstance() {
         return INSTANCE;
     }
 

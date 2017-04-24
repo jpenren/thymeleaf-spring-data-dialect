@@ -13,9 +13,9 @@ import org.thymeleaf.templatemode.TemplateMode;
 
 final class PageObjectAttrProcessor extends AbstractAttributeTagProcessor {
     private static final String ATTR_NAME = "page-object";
-    public static final int PRECEDENCE = 900;
+    private static final int PRECEDENCE = 900;
 
-    protected PageObjectAttrProcessor(final String dialectPrefix) {
+    PageObjectAttrProcessor(final String dialectPrefix) {
         super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }
 
@@ -33,6 +33,7 @@ final class PageObjectAttrProcessor extends AbstractAttributeTagProcessor {
 
             ((WebEngineContext) context).setVariable(Keys.PAGE_VARIABLE_KEY, page);
         }
+
     }
 
 }

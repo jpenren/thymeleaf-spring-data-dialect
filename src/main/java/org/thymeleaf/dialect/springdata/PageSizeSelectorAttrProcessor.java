@@ -22,12 +22,12 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
     private static final String MESSAGE_PREFIX = "page.size.selector.";
     private static final String DEFAULT_STYLE = MESSAGE_PREFIX + "default";
     private static final String ATTR_NAME = "page-size-selector";
-    public static final int PRECEDENCE = 900;
+    private static final int PRECEDENCE = 900;
     private static final String BUNDLE_NAME = "PageSizeSelector";
     private static final String SELECTOR_VALUES = "page.size.selector.values";
     private final List<Integer> selectorValues = new ArrayList<Integer>();
 
-    protected PageSizeSelectorAttrProcessor(final String dialectPrefix) {
+    PageSizeSelectorAttrProcessor(final String dialectPrefix) {
         super(TemplateMode.HTML, dialectPrefix, null, false, ATTR_NAME, true, PRECEDENCE, true);
     }
 
@@ -70,8 +70,6 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
      *            html selector style
      * @param context
      *            execution context
-     * @param selectedValue
-     *            current selected value
      * @return available page size options as html
      */
     private String composeSelectorOptions(String selectorStyle, ITemplateContext context) {
