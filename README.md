@@ -126,25 +126,25 @@ Compact pager:
     </div>
 </div>
 ```
-![alt text] (https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/compact.png "Compact pager")
+![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/compact.png "Compact pager")
 
 Page size selector (default requires your own javascript code, no action associated):
 ```html
 Show <span sd:page-size-selector="default"></span> entries
 ```
-![alt text] (https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-select.png "Page size selector")
+![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-select.png "Page size selector")
 
 Page size selector (with javascript code implemented):
 ```html
 Show <span sd:page-size-selector="javascript"></span> entries
 ```
-![alt text] (https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-select.png "Page size selector")
+![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-select.png "Page size selector")
 
 Page size selector (dropdown):
 ```html
 <div class="btn-group dropup" sd:page-size-selector="dropdown"></div>
 ```
-![alt text] (https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-dropdown.png "Page size selector")
+![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/page-size-dropdown.png "Page size selector")
 
 Multiple tables on the same page:
 
