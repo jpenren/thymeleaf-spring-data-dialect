@@ -11,14 +11,9 @@ Maven dependency:
 <dependency>
 	<groupId>io.github.jpenren</groupId>
 	<artifactId>thymeleaf-spring-data-dialect</artifactId>
-	<version>(see versions below)</version>
+	<version>3.3.1</version>
 </dependency>
 ```
-
-Version 2.1.1 for Thymeleaf 2 (discontinued)
-
-Version 3.3.0 compatible with Thymeleaf 3
-
 
 Add the Spring Data dialect to your existing Thymeleaf template engine:
 
