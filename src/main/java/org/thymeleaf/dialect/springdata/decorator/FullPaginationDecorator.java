@@ -25,9 +25,8 @@ public final class FullPaginationDecorator implements PaginationDecorator {
 
         // laquo
         String firstPage = PageUtils.createPageUrl(context, 0);
-        boolean isFirstPage = page.getNumber() == 0;
         Locale locale = context.getLocale();
-        String laquo = isFirstPage ? getLaquo(locale) : getLaquo(firstPage, locale);
+        String laquo = PageUtils.isFirstPage(page) ? getLaquo(locale) : getLaquo(firstPage, locale);
 
         // Previous page
         String previous = getPreviousPageLink(page, context);
@@ -39,9 +38,8 @@ public final class FullPaginationDecorator implements PaginationDecorator {
         String next = getNextPageLink(page, context);
 
         // raquo
-        boolean isLastPage = page.getTotalPages() == 0 || page.getNumber() == (page.getTotalPages() - 1);
         String lastPage = PageUtils.createPageUrl(context, page.getTotalPages() - 1);
-        String raquo = isLastPage ? getRaquo(locale) : getRaquo(lastPage, locale);
+        String raquo = page.isLast() ? getRaquo(locale) : getRaquo(lastPage, locale);
 
         boolean isUl = Strings.UL.equalsIgnoreCase(tag.getElementCompleteName());
         String currentClass = tag.getAttributeValue(Strings.CLASS);
@@ -119,22 +117,18 @@ public final class FullPaginationDecorator implements PaginationDecorator {
     }
 
     private String getPreviousPageLink(Page<?> page, final ITemplateContext context) {
-        int previousPage = page.getNumber() - 1;
-        String msgKey = previousPage < 0 ? "previous.page" : "previous.page.link";
+        String msgKey = PageUtils.hasPrevious(page) ? "previous.page.link" : "previous.page";
         Locale locale = context.getLocale();
+        int previousPage = page.getNumber()-1;
         String link = PageUtils.createPageUrl(context, previousPage);
 
         return Messages.getMessage(BUNDLE_NAME, msgKey, locale, link);
     }
 
     private String getNextPageLink(Page<?> page, final ITemplateContext context) {
-        int totalPages = page.getTotalPages();
-        int currentPage = page.getNumber();
-        int nextPage = currentPage + 1;
-        boolean hasMorePages = (totalPages > 0) && (nextPage < totalPages);
-        
-        String msgKey = hasMorePages ? "next.page.link" : "next.page";
+        String msgKey = page.hasNext() ? "next.page.link" : "next.page";
         Locale locale = context.getLocale();
+        int nextPage = page.getNumber() + 1;
         String link = PageUtils.createPageUrl(context, nextPage);
 
         return Messages.getMessage(BUNDLE_NAME, msgKey, locale, link);

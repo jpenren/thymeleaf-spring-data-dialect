@@ -138,6 +138,18 @@ public final class PageUtils {
     public static int getLatestItemInPage(final Page<?> page) {
         return page.getSize() * page.getNumber() + page.getNumberOfElements();
     }
+    
+    public static boolean isFirstPage(Page<?> page) {
+    		if( page.getTotalPages()==0 ) {
+    			return true;
+    		}
+    		
+    		return page.isFirst();
+    }
+    
+    public static boolean hasPrevious(Page<?> page) {
+    		return page.getTotalPages()>0 && page.hasPrevious();
+    }
 
     private static String buildBaseUrl(final ITemplateContext context, Collection<String> excludeParams) {
         // URL defined with pagination-url tag

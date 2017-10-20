@@ -60,7 +60,7 @@ final class PageSizeSelectorAttrProcessor extends AbstractAttributeTagProcessor 
     }
 
     private String getMessageKey(String selectorStyle) {
-        return "".equals(selectorStyle) ? DEFAULT_STYLE : MESSAGE_PREFIX.concat(selectorStyle);
+        return Strings.EMPTY.equals(selectorStyle) ? DEFAULT_STYLE : MESSAGE_PREFIX.concat(selectorStyle);
     }
 
     /**
