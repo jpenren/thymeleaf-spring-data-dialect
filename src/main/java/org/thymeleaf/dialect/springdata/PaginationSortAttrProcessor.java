@@ -32,9 +32,9 @@ final class PaginationSortAttrProcessor extends AbstractAttributeTagProcessor {
 
         // Append class to the element if sorted by this field
         Sort sort = page.getSort();
-        boolean isSorted = sort != null && sort.getOrderFor(attributeValue) != null;
+        boolean isSorted = sort != null && sort.getOrderFor(attrValue) != null;
         String clas = isSorted
-                ? SORTED_PREFIX.concat(sort.getOrderFor(attributeValue).getDirection().toString().toLowerCase())
+                ? SORTED_PREFIX.concat(sort.getOrderFor(attrValue).getDirection().toString().toLowerCase())
                 : EMPTY;
 
         structureHandler.setAttribute(HREF, url);
