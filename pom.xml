@@ -113,10 +113,5 @@
 			<artifactId>thymeleaf</artifactId>
 			<version>3.0.0.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>com.github.mnoky</groupId>
-			<artifactId>thymeleaf-spring-data-dialect</artifactId>
-			<version>v3.3.1</version>
-		</dependency>
 	</dependencies>
 </project>
