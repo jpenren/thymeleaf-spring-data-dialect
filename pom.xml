@@ -116,7 +116,7 @@
 		<dependency>
 			<groupId>com.github.mnoky</groupId>
 			<artifactId>thymeleaf-spring-data-dialect</artifactId>
-			<version>master-SNAPSHOT</version>
+			<version>v3.3.1</version>
 		</dependency>
 	</dependencies>
 </project>
