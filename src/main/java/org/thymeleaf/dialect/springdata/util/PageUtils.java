@@ -96,9 +96,10 @@ public final class PageUtils {
      * 
      * @param context execution context
      * @param fieldName field name to sort
+     * @param forcedDir optional, if specified then only this sort direction will be allowed
      * @return sort URL
      */
-    public static String createSortUrl(final ITemplateContext context, final String fieldName) {
+    public static String createSortUrl(final ITemplateContext context, final String fieldName, final Direction forcedDir) {
         // Params can be prefixed to manage multiple pagination on the same page
         final String prefix = getParamPrefix(context);
         final Collection<String> excludedParams = Arrays
@@ -109,7 +110,9 @@ public final class PageUtils {
         final Page<?> page = findPage(context);
         final Sort sort = page.getSort();
         final boolean hasPreviousOrder = sort != null && sort.getOrderFor(fieldName) != null;
-        if (hasPreviousOrder) {
+        if (forcedDir != null) {
+            sortParam.append(fieldName).append(COMMA).append(forcedDir.toString().toLowerCase());
+        } else if (hasPreviousOrder) {
             // Sort parameters exists for this field, modify direction
             Order previousOrder = sort.getOrderFor(fieldName);
             Direction dir = previousOrder.isAscending() ? Direction.DESC : Direction.ASC;
