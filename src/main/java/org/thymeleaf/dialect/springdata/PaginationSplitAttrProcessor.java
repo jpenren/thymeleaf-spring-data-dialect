@@ -23,7 +23,7 @@ final class PaginationSplitAttrProcessor extends AbstractAttributeTagProcessor {
 
         if (context instanceof WebEngineContext) {
             Number split = (Number) Expressions.evaluate(context, attributeValue);
-            ((WebEngineContext) context).setVariable(Keys.PAGINATION_SPLIT_KEY, split);
+            ((WebEngineContext) context).setVariable(Keys.PAGINATION_SPLIT_KEY, split.intValue());
         }
     }
 
