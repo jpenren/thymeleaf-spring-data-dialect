@@ -11,7 +11,7 @@ Maven dependency:
 <dependency>
 	<groupId>io.github.jpenren</groupId>
 	<artifactId>thymeleaf-spring-data-dialect</artifactId>
-	<version>3.3.1</version>
+	<version>3.4.0</version>
 </dependency>
 ```
 
@@ -72,7 +72,7 @@ Your html page looks like:
     </div>
     <div class="col-sm-6">
     	<nav class="pull-right">
-		<ul class="pagination" sd:pagination="full">
+		<ul class="pagination" sd:pagination-split="7" sd:pagination="full">
 			<!-- Pagination created by SpringDataDialect, this content is just for mockup -->
 			<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
 		   	<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
@@ -81,6 +81,9 @@ Your html page looks like:
     </div>
 </div>
 ```
+
+Use optional attribute <code>sd:pagination-split</code> to configure the number of links to show.
+
 
 ![alt text](https://raw.githubusercontent.com/jpenren/thymeleaf-spring-data-dialect/master/doc/simple.png "Simple")
 
