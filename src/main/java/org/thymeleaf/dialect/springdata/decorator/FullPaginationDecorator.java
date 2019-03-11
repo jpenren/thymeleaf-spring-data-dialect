@@ -1,19 +1,32 @@
 package org.thymeleaf.dialect.springdata.decorator;
 
-import java.util.Locale;
-
 import org.springframework.data.domain.Page;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.springdata.Keys;
+import org.thymeleaf.dialect.springdata.SpringDataDialect;
 import org.thymeleaf.dialect.springdata.util.Messages;
 import org.thymeleaf.dialect.springdata.util.PageUtils;
 import org.thymeleaf.dialect.springdata.util.Strings;
 import org.thymeleaf.model.IProcessableElementTag;
 
+import java.util.Locale;
+import java.util.Map;
+
 public final class FullPaginationDecorator implements PaginationDecorator {
     private static final String DEFAULT_CLASS = "pagination";
     private static final String BUNDLE_NAME = FullPaginationDecorator.class.getSimpleName();
     private static final int DEFAULT_PAGE_SPLIT = 7;
+    private static final String CSS_ATTR_PREFIX = SpringDataDialect.PREFIX + ":" + DEFAULT_CLASS + "-";
+
+    // define custom CSS tags
+    private String cssLaquo = "page-item";
+    private String cssRaquo = "page-item";
+    private String cssPrevious = "page-item";
+    private String cssNext = "page-item";
+    private String cssPageItem = "page-item";
+    private String cssPageLink = "page-link";
+    private String cssDisabled = "disabled";
+    private String cssActive = "active";
 
     public String getIdentifier() {
         return "full";
@@ -22,6 +35,8 @@ public final class FullPaginationDecorator implements PaginationDecorator {
     public String decorate(final IProcessableElementTag tag, final ITemplateContext context) {
 
         Page<?> page = PageUtils.findPage(context);
+
+        configureCss(tag.getAttributeMap());
 
         // laquo
         String firstPage = PageUtils.createPageUrl(context, 0);
@@ -93,27 +108,27 @@ public final class FullPaginationDecorator implements PaginationDecorator {
     }
 
     private String getLaquo(Locale locale) {
-        return Messages.getMessage(BUNDLE_NAME, "laquo", locale);
+        return Messages.getMessage(BUNDLE_NAME, "laquo", locale, cssLaquo, cssPageLink, cssDisabled);
     }
 
     private String getLaquo(String firstPage, Locale locale) {
-        return Messages.getMessage(BUNDLE_NAME, "laquo.link", locale, firstPage);
+        return Messages.getMessage(BUNDLE_NAME, "laquo.link", locale, firstPage, cssLaquo, cssPageLink);
     }
 
     private String getRaquo(Locale locale) {
-        return Messages.getMessage(BUNDLE_NAME, "raquo", locale);
+        return Messages.getMessage(BUNDLE_NAME, "raquo", locale, cssRaquo, cssPageLink, cssDisabled);
     }
 
     private String getRaquo(String lastPage, Locale locale) {
-        return Messages.getMessage(BUNDLE_NAME, "raquo.link", locale, lastPage);
+        return Messages.getMessage(BUNDLE_NAME, "raquo.link", locale, lastPage, cssRaquo, cssPageLink);
     }
 
     private String getLink(int pageNumber, Locale locale) {
-        return Messages.getMessage(BUNDLE_NAME, "link.active", locale, pageNumber);
+        return Messages.getMessage(BUNDLE_NAME, "link.active", locale, pageNumber, cssActive, cssPageLink);
     }
 
     private String getLink(int pageNumber, String url, Locale locale) {
-        return Messages.getMessage(BUNDLE_NAME, "link", locale, url, pageNumber);
+        return Messages.getMessage(BUNDLE_NAME, "link", locale, url, pageNumber, cssPageItem, cssPageLink);
     }
 
     private String getPreviousPageLink(Page<?> page, final ITemplateContext context) {
@@ -122,7 +137,7 @@ public final class FullPaginationDecorator implements PaginationDecorator {
         int previousPage = page.getNumber()-1;
         String link = PageUtils.createPageUrl(context, previousPage);
 
-        return Messages.getMessage(BUNDLE_NAME, msgKey, locale, link);
+        return Messages.getMessage(BUNDLE_NAME, msgKey, locale, link, cssPrevious, cssPageLink, cssDisabled);
     }
 
     private String getNextPageLink(Page<?> page, final ITemplateContext context) {
@@ -131,7 +146,42 @@ public final class FullPaginationDecorator implements PaginationDecorator {
         int nextPage = page.getNumber() + 1;
         String link = PageUtils.createPageUrl(context, nextPage);
 
-        return Messages.getMessage(BUNDLE_NAME, msgKey, locale, link);
+        return Messages.getMessage(BUNDLE_NAME, msgKey, locale, link, cssNext, cssPageLink, cssDisabled);
+    }
+
+    private void configureCss(Map<String,String> attributeMap) {
+
+        if (attributeMap.get(CSS_ATTR_PREFIX + "laquo") != null) {
+            this.cssLaquo = attributeMap.get(CSS_ATTR_PREFIX + "laquo");
+        }
+
+        if (attributeMap.get(CSS_ATTR_PREFIX + "raquo") != null) {
+            this.cssRaquo = attributeMap.get(CSS_ATTR_PREFIX + "raquo");
+        }
+
+        if (attributeMap.get(CSS_ATTR_PREFIX + "previous") != null) {
+            this.cssPrevious = attributeMap.get(CSS_ATTR_PREFIX + "previous");
+        }
+
+        if (attributeMap.get(CSS_ATTR_PREFIX + "next") != null) {
+            this.cssNext = attributeMap.get(CSS_ATTR_PREFIX + "next");
+        }
+
+        if (attributeMap.get(CSS_ATTR_PREFIX + "page-item") != null) {
+            this.cssPageItem = attributeMap.get(CSS_ATTR_PREFIX + "page-item");
+        }
+
+        if (attributeMap.get(CSS_ATTR_PREFIX + "page-link") != null) {
+            this.cssPageLink = attributeMap.get(CSS_ATTR_PREFIX + "page-link");
+        }
+
+        if (attributeMap.get(CSS_ATTR_PREFIX + "disabled") != null) {
+            this.cssDisabled = attributeMap.get(CSS_ATTR_PREFIX + "disabled");
+        }
+
+        if (attributeMap.get(CSS_ATTR_PREFIX + "active") != null) {
+            this.cssActive = attributeMap.get(CSS_ATTR_PREFIX + "active");
+        }
     }
 
 }
