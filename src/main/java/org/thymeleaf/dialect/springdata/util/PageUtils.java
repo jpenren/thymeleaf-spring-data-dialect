@@ -11,13 +11,10 @@ import static org.thymeleaf.dialect.springdata.util.Strings.SORT;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -31,6 +28,8 @@ import org.thymeleaf.dialect.springdata.exception.InvalidObjectParameterExceptio
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
+import org.thymeleaf.web.IWebExchange;
+import org.thymeleaf.web.IWebRequest;
 import org.unbescape.html.HtmlEscape;
 
 @SuppressWarnings("unchecked")
@@ -60,12 +59,12 @@ public final class PageUtils {
 
         // Search for Page object, and only one instance, as request attribute
         if (context instanceof IWebContext) {
-            HttpServletRequest request = ((IWebContext) context).getRequest();
-            Enumeration<String> attrNames = request.getAttributeNames();
+            IWebExchange webExchange = ((IWebContext) context).getExchange();
+            Set<String> attrNames = webExchange.getAllAttributeNames();
             Page<?> pageOnRequest = null;
-            while (attrNames.hasMoreElements()) {
-                String attrName = (String) attrNames.nextElement();
-                Object attr = request.getAttribute(attrName);
+
+            for (String attrName : attrNames) {
+                Object attr = webExchange.getAttributeValue(attrName);
                 if (isPageInstance(attr)) {
                     if (pageOnRequest != null) {
                         throw new InvalidObjectParameterException("More than one Page object found on request!");
@@ -162,10 +161,11 @@ public final class PageUtils {
             // Creates url from actual request URI and parameters
             final StringBuilder builder = new StringBuilder();
             final IWebContext webContext = (IWebContext) context;
-            final HttpServletRequest request = webContext.getRequest();
+            final IWebExchange webExchange = webContext.getExchange();
+            final IWebRequest request = webExchange.getRequest();
 
             // URL base path from request
-            builder.append(request.getRequestURI());
+            builder.append(request.getRequestURL());
 
             Map<String, String[]> params = request.getParameterMap();
             Set<Entry<String, String[]>> entries = params.entrySet();
