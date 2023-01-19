@@ -30,6 +30,7 @@ import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.web.IWebExchange;
 import org.thymeleaf.web.IWebRequest;
+import org.thymeleaf.web.servlet.IServletWebRequest;
 import org.unbescape.html.HtmlEscape;
 
 @SuppressWarnings("unchecked")
@@ -165,7 +166,7 @@ public final class PageUtils {
             final IWebRequest request = webExchange.getRequest();
 
             // URL base path from request
-            builder.append(request.getRequestURL());
+            builder.append(getRequestURI(request));
 
             Map<String, String[]> params = request.getParameterMap();
             Set<Entry<String, String[]>> entries = params.entrySet();
@@ -201,6 +202,31 @@ public final class PageUtils {
         }
 
         return url == null ? EMPTY : url;
+    }
+
+    private static String getRequestURI(IWebRequest webRequest) {
+        if (webRequest instanceof IServletWebRequest servletWebRequest) {
+            return servletWebRequest.getRequestURI();
+        } else  {
+            // from org.thymeleaf.web.IWebRequest.getRequestURL
+            String scheme = webRequest.getScheme();
+            String serverName = webRequest.getServerName();
+            Integer serverPort = webRequest.getServerPort();
+            String requestPath = webRequest.getRequestPath();
+            if (scheme != null && serverName != null && serverPort != null) {
+                StringBuilder urlBuilder = new StringBuilder();
+                urlBuilder.append(scheme).append("://").append(serverName);
+                if ((!scheme.equals("http") || serverPort != 80) && (!scheme.equals("https") || serverPort != 443)) {
+                    urlBuilder.append(':').append(serverPort);
+                }
+
+                urlBuilder.append(requestPath);
+
+                return urlBuilder.toString();
+            } else {
+                throw new UnsupportedOperationException("Request scheme, server name or port are null in this environment. Cannot compute request URL");
+            }
+        }
     }
 
     private static boolean isPageInstance(Object page) {
