@@ -11,7 +11,7 @@ Maven dependency:
 <dependency>
 	<groupId>io.github.jpenren</groupId>
 	<artifactId>thymeleaf-spring-data-dialect</artifactId>
-	<version>3.5.0</version>
+	<version>3.6.0</version>
 </dependency>
 ```
 
